@@ -121,22 +121,3 @@ class Ticket(models.Model):
 
     class Meta:
         unique_together = ("movie_session", "row", "seat")
-
-    def validate(self, attrs):
-        movie_session = attrs["movie_session"]
-        row = attrs["row"]
-        seat = attrs["seat"]
-
-        hall = movie_session.cinema_hall
-        if not (1 <= row <= hall.rows):
-            raise ValidationError(f"Row must be between 1 and "
-                                  f"{hall.rows}")
-        if not (1 <= seat <= hall.seats_in_row):
-            raise ValidationError(f"Seat must be between 1 and "
-                                  f"{hall.seats_in_row}")
-
-        if Ticket.objects.filter(movie_session=movie_session,
-                                 row=row, seat=seat).exists():
-            raise ValidationError("This seat is already taken.")
-
-        return attrs
