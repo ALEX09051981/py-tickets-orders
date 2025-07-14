@@ -112,7 +112,8 @@ class TicketSerializer(serializers.ModelSerializer):
             seat=seat
         ).exists():
             raise ValidationError(
-                f"Seat (row {row}, seat {seat}) is already taken for this session."
+                f"Seat (row {row}, "
+                f"seat {seat}) is already taken for this session."
             )
 
         Ticket.validate_seat(movie_session, row, seat)
