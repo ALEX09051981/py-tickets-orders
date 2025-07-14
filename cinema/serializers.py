@@ -140,5 +140,6 @@ class OrderSerializer(serializers.ModelSerializer):
 class TicketListSerializer(TicketSerializer):
     trip = TicketSerializer(read_only=True)
 
+
 class OrderListSerializer(OrderSerializer):
     tickets = TicketListSerializer(read_only=True, many=True)
