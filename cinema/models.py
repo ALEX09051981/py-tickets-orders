@@ -121,3 +121,15 @@ class Ticket(models.Model):
 
     class Meta:
         unique_together = ("movie_session", "row", "seat")
+
+    @classmethod
+    def validate_seat(cls, movie_session, row, seat):
+        hall = movie_session.cinema_hall
+
+        if not (1 <= row <= hall.rows):
+            raise ValidationError(f"Row number must be in range 1 to "
+                                  f"{hall.rows}")
+
+        if not (1 <= seat <= hall.seats_in_row):
+            raise ValidationError(f"Seat number must be in range 1 to "
+                                  f"{hall.seats_in_row}")
