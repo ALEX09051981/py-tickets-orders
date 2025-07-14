@@ -101,24 +101,23 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = ("row", "seat", "movie_session")
 
-        def validate(self, attrs):
-            movie_session = attrs.get("movie_session")
-            row = attrs.get("row")
-            seat = attrs.get("seat")
+    def validate(self, attrs):
+        movie_session = attrs.get("movie_session")
+        row = attrs.get("row")
+        seat = attrs.get("seat")
 
-            if Ticket.objects.filter(
-                    movie_session=movie_session,
-                    row=row,
-                    seat=seat
-            ).exists():
-                raise ValidationError(
-                    f"Seat (row {row}, "
-                    f"seat {seat}) is already taken for this session."
-                )
+        if Ticket.objects.filter(
+            movie_session=movie_session,
+            row=row,
+            seat=seat
+        ).exists():
+            raise ValidationError(
+                f"Seat (row {row}, seat {seat}) is already taken for this session."
+            )
 
-            Ticket.validate_seat(movie_session, row, seat)
+        Ticket.validate_seat(movie_session, row, seat)
 
-            return attrs
+        return attrs
 
 
 class OrderSerializer(serializers.ModelSerializer):
